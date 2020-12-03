@@ -35,7 +35,7 @@ const scene = new Scene();
 
 const iFrame = document.createElement('iframe');
 iFrame.src = 'https://threejs.org';
-iFrame.style.border	= 'none';
+iFrame.style.border = 'none';
 
 const element = new DOMElement(context, iFrame);
 scene.add(element);
