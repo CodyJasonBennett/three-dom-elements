@@ -33,10 +33,6 @@ class DOMElement extends Mesh {
     this.width = width;
     this.height = height;
 
-    this.position = new Vector3();
-    this.scale = new Vector3();
-    this.quaternion = new Quaternion();
-
     this.resizeDomElement();
 
     this.cssObject = new CSS3DObject(this.domElement);
