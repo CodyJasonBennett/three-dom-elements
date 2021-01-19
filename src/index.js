@@ -1,2 +1,7 @@
-export * from './objects/DOMElement.js';
-export * from './renderers/DOMContext.js';
+import DOMElement from './objects/DOMElement.js';
+import DOMContext from './renderers/DOMContext.js';
+
+export {
+  DOMElement,
+  DOMContext,
+};
