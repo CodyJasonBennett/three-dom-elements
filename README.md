@@ -4,12 +4,11 @@
 [![Minzipped size](https://badgen.net/bundlephobia/minzip/three-dom-elements)](https://bundlephobia.com/result?p=three-dom-elements)
 [![License](https://img.shields.io/badge/license-MIT-007ec6.svg)](https://github.com/CodyJasonBennett/three-dom-elements/blob/master/LICENSE)
 
-A lightweight [three.js](https://github.com/mrdoob/three.js) extension to integrate DOM elements into your scene. View the [live demo](https://three-dom-elements.codyb.co) ([source](/examples/index.html)).
+A lightweight [three.js](https://github.com/mrdoob/three.js) extension to integrate DOM elements into your scene.
 
 ## Usage
 
-The following projects an iFrame into a threejs scene as a plane.
-You can use this plane as normal with techniques like raycasting, etc.
+The following projects an iFrame into a threejs scene as a plane. You can use this plane as normal with techniques like raycasting, etc.
 
 View the [live demo](https://codesandbox.io/s/three-dom-elements-cg2uc).
 
@@ -43,7 +42,7 @@ iFrame.style.border = 'none';
 const element = new DOMElement(context, iFrame);
 scene.add(element);
 
-// Render
+// Render it
 renderer.setAnimationLoop(() => {
   context.update();
 

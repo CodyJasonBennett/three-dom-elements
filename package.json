@@ -1,20 +1,38 @@
 {
   "name": "three-dom-elements",
-  "version": "0.4.0",
+  "version": "1.0.0",
   "homepage": "https://github.com/CodyJasonBennett/three-dom-elements",
   "description": "A lightweight three.js extension to integrate DOM elements into your scene.",
   "repository": "https://github.com/CodyJasonBennett/three-dom-elements.git",
   "author": "Cody Bennett <hi@codyb.co>",
   "license": "MIT",
-  "main": "dist/index.js",
-  "module": "dist/index.module.js",
+  "files": [
+    "dist/**.js*",
+    "dist/**/*.ts"
+  ],
+  "source": "src/index.ts",
+  "main": "dist/index.umd.js",
+  "module": "dist/index.modern.module.js",
+  "unpkg": "dist/index.umd.js",
+  "types": "dist/index.d.ts",
   "devDependencies": {
-    "microbundle": "^0.13.0"
+    "@types/three": "^0.126.0",
+    "concurrently": "^6.0.0",
+    "eslint": "^7.21.0",
+    "microbundle": "^0.13.0",
+    "prettier": "^2.2.1",
+    "serve": "^11.3.2",
+    "three": "^0.126.1"
   },
   "peerDependencies": {
-    "three": ">=0.121"
+    "three": ">=0.125"
   },
   "scripts": {
-    "build": "microbundle --globals three=THREE --external three"
+    "dev": "concurrently 'npm:build-watch' 'npm:start'",
+    "start": "serve",
+    "build": "microbundle --globals three=THREE --external three",
+    "build-watch": "microbundle watch",
+    "lint": "prettier src --check",
+    "lint-fix": "prettier src --write src"
   }
 }

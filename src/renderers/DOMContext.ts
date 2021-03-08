@@ -1,16 +1,21 @@
 import { PerspectiveCamera, Scene } from 'three';
-import { CSS3DRenderer } from 'three/examples/jsm/renderers/CSS3DRenderer.js';
-import { cssFactor } from '../constants.js';
+import { CSS3DRenderer } from 'three/examples/jsm/renderers/CSS3DRenderer';
+import { DOMElement } from '../objects/DOMElement';
+import { cssFactor } from '../constants';
 
-/**
- * A DOM context instance
- */
-class DOMContext {
+export class DOMContext {
+  enabled: boolean;
+  cssRenderer: CSS3DRenderer;
+  domElement: HTMLElement;
+  cssCamera: PerspectiveCamera;
+  camera: PerspectiveCamera;
+  cssScene: Scene;
+
   /**
-   * Creates a DOM context instance
-   * @param {PerspectiveCamera} camera A perspective camera instance to draw from
+   * DOM context instance
+   * @param camera  A perspective camera instance to draw from
    */
-  constructor(camera) {
+  constructor(camera: PerspectiveCamera) {
     this.enabled = true;
 
     this.cssRenderer = new CSS3DRenderer();
@@ -31,10 +36,10 @@ class DOMContext {
 
   /**
    * Resizes the DOM context's renderer and camera
-   * @param {number} width Target width
-   * @param {number} height Target height
+   * @param width Target width
+   * @param height Target height
    */
-  setSize(width, height) {
+  setSize(width: number, height: number) {
     this.cssRenderer.setSize(width, height);
     this.cssCamera.aspect = width / height;
     this.cssCamera.updateProjectionMatrix();
@@ -49,14 +54,14 @@ class DOMContext {
 
     if (this.enabled) {
       this.cssScene.traverse(child => {
-        if (!child.update) return;
+        const element = child as DOMElement;
 
-        child.update();
+        if (!element.update) return;
+
+        element.update();
       });
     }
 
     this.cssRenderer.render(this.cssScene, this.cssCamera);
   }
 }
-
-export default DOMContext;

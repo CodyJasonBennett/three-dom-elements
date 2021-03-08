@@ -4,31 +4,57 @@ import {
   MeshBasicMaterial,
   NoBlending,
   DoubleSide,
+  Vector3,
+  Box3,
 } from 'three';
-import { CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer.js';
-import DOMContext from '../renderers/DOMContext.js';
-import { cssFactor } from '../constants.js';
+import { CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer';
+import { DOMContext } from '../renderers/DOMContext';
+import { cssFactor } from '../constants';
 
-/**
- * DOM element that is projected into 3D space
- */
-class DOMElement extends Mesh {
+export class DOMElement extends Mesh {
   /**
-   * Creates a DOM element that is projected into 3D space
-   * @param {DOMContext} context A DOM context instance to draw on
-   * @param {HTMLElement} domElement A DOM element to project
-   * @param {Object} [options] DOM element options
-   * @param {number} [options.elementWidth=768] DOM element width
-   * @param {number} [options.width=1] 3D plane width
-   * @param {number} [options.height=0.75] 3D plane height
+   * The projected 2D DOM element
+   */
+  domElement: HTMLElement;
+  /**
+   * DOM element aspect artio
+   */
+  aspectRatio: number;
+  /**
+   * DOM element width
+   */
+  elementWidth: number;
+  /**
+   * DOM element height
+   */
+  elementHeight: number;
+  /**
+   * 3D projection width
+   */
+  width: number;
+  /**
+   * 3D projection height
+   */
+  height: number;
+  /**
+   * The projecting 3D object
+   */
+  cssObject: CSS3DObject;
+
+  /**
+   * DOM element that is projected into 3D space
+   * @param context A DOM context instance to draw on
+   * @param domElement A DOM element to project
+   * @param options DOM element options
+   * @param options.elementWidth DOM element width
+   * @param options.width 3D plane width
+   * @param options.height 3D plane height
    */
   constructor(
-    context,
-    domElement,
-    options
+    context: DOMContext,
+    domElement: HTMLElement,
+    { elementWidth = 768, width = 1, height = 0.75 } = {}
   ) {
-    const { elementWidth = 768, width = 1, height = 0.75 } = options || {};
-
     const geometry = new PlaneGeometry(width, height);
     const material = new MeshBasicMaterial({
       opacity: 0,
@@ -67,9 +93,9 @@ class DOMElement extends Mesh {
 
   /**
    * Updates the projected DOM element
-   * @param {HTMLElement} domElement A DOM element to project
+   * @param domElement A DOM element to project
    */
-  setDomElement(domElement) {
+  setDomElement(domElement: HTMLElement) {
     if (this.domElement.parentNode) {
       this.domElement.parentNode.removeChild(this.domElement);
     }
@@ -92,12 +118,12 @@ class DOMElement extends Mesh {
     this.cssObject.quaternion.copy(this.quaternion);
     this.cssObject.position.copy(this.position).multiplyScalar(cssFactor);
 
-    const scaleFactor =
-      this.elementWidth / (this.geometry.parameters.width * this.scale.x);
+    const size = new Vector3();
+    new Box3().setFromObject(this).getSize(size);
+
+    const scaleFactor = this.elementWidth / (size.x * this.scale.x);
 
     this.cssObject.scale.multiplyScalar(cssFactor / scaleFactor);
     this.cssObject.visible = this.visible;
   }
 }
-
-export default DOMElement;
