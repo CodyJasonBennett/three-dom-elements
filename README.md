@@ -11,32 +11,39 @@ A lightweight [three.js](https://github.com/mrdoob/three.js) extension to integr
 The following projects an iFrame into a threejs scene as a plane.
 You can use this plane as normal with techniques like raycasting, etc.
 
+View the [live demo](https://codesandbox.io/s/three-dom-elements-cg2uc).
+
 ```js
+import { WebGLRenderer, PerspectiveCamera, Scene } from 'three';
 import { DOMContext, DOMElement } from 'three-dom-elements';
 
+const { innerWidth, innerHeight } = window;
+
+// Three boilerplate
+const renderer = new WebGLRenderer();
+renderer.setSize(innerWidth, innerHeight);
+document.body.appendChild(renderer.domElement);
+
+const camera = new PerspectiveCamera(45, innerWidth / innerHeight, 0.01, 10);
+camera.position.z = 2;
+
+const scene = new Scene();
+
+// Create a DOM context to draw from
 const context = new DOMContext(camera);
 context.setSize(innerWidth, innerHeight);
 document.body.appendChild(context.domElement);
 
+// Create a DOM element
 const iFrame = document.createElement('iframe');
 iFrame.src = 'https://threejs.org';
 iFrame.style.border = 'none';
 
+// Project it
 const element = new DOMElement(context, iFrame);
 scene.add(element);
 
-const handleResize = () => {
-  const { innerWidth, innerHeight } = window;
-
-  renderer.setSize(innerWidth, innerHeight);
-  context.setSize(innerWidth, innerHeight);
-
-  camera.aspect = innerWidth / innerHeight;
-  camera.updateProjectionMatrix();
-};
-
-window.addEventListener('resize', handleResize);
-
+// Render
 renderer.setAnimationLoop(() => {
   context.update();
 

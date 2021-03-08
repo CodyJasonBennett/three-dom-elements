@@ -6,14 +6,29 @@ import {
   DoubleSide,
 } from 'three';
 import { CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer.js';
+import DOMContext from '../renderers/DOMContext.js';
 import { cssFactor } from '../constants.js';
 
+/**
+ * DOM element that is projected into 3D space
+ */
 class DOMElement extends Mesh {
+  /**
+   * Creates a DOM element that is projected into 3D space
+   * @param {DOMContext} context A DOM context instance to draw on
+   * @param {HTMLElement} domElement A DOM element to project
+   * @param {Object} [options] DOM element options
+   * @param {number} [options.elementWidth=768] DOM element width
+   * @param {number} [options.width=1] 3D plane width
+   * @param {number} [options.height=0.75] 3D plane height
+   */
   constructor(
     context,
     domElement,
-    { elementWidth = 768, width = 1, height = 0.75 } = {}
+    options
   ) {
+    const { elementWidth = 768, width = 1, height = 0.75 } = options || {};
+
     const geometry = new PlaneGeometry(width, height);
     const material = new MeshBasicMaterial({
       opacity: 0,
@@ -42,11 +57,18 @@ class DOMElement extends Mesh {
     this.update = this.update.bind(this);
   }
 
+  /**
+   * Resizes DOM element to sync with projection
+   */
   resizeDomElement() {
     this.domElement.style.width = `${this.elementWidth}px`;
     this.domElement.style.height = `${this.elementHeight}px`;
   }
 
+  /**
+   * Updates the projected DOM element
+   * @param {HTMLElement} domElement A DOM element to project
+   */
   setDomElement(domElement) {
     if (this.domElement.parentNode) {
       this.domElement.parentNode.removeChild(this.domElement);
@@ -58,6 +80,9 @@ class DOMElement extends Mesh {
     this.resizeDomElement();
   }
 
+  /**
+   * Updates the DOM element and its projection states
+   */
   update() {
     this.updateMatrixWorld();
     const worldMatrix = this.matrixWorld;

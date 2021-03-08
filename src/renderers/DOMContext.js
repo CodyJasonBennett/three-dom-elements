@@ -2,7 +2,14 @@ import { PerspectiveCamera, Scene } from 'three';
 import { CSS3DRenderer } from 'three/examples/jsm/renderers/CSS3DRenderer.js';
 import { cssFactor } from '../constants.js';
 
+/**
+ * A DOM context instance
+ */
 class DOMContext {
+  /**
+   * Creates a DOM context instance
+   * @param {PerspectiveCamera} camera A perspective camera instance to draw from
+   */
   constructor(camera) {
     this.enabled = true;
 
@@ -22,12 +29,20 @@ class DOMContext {
     this.update = this.update.bind(this);
   }
 
+  /**
+   * Resizes the DOM context's renderer and camera
+   * @param {number} width Target width
+   * @param {number} height Target height
+   */
   setSize(width, height) {
     this.cssRenderer.setSize(width, height);
     this.cssCamera.aspect = width / height;
     this.cssCamera.updateProjectionMatrix();
   }
 
+  /**
+   * Updates the DOM context's renderer and camera states
+   */
   update() {
     this.cssCamera.quaternion.copy(this.camera.quaternion);
     this.cssCamera.position.copy(this.camera.position).multiplyScalar(cssFactor);

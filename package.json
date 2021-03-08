@@ -1,6 +1,6 @@
 {
   "name": "three-dom-elements",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "homepage": "https://github.com/CodyJasonBennett/three-dom-elements",
   "description": "A lightweight three.js extension to integrate DOM elements into your scene.",
   "repository": "https://github.com/CodyJasonBennett/three-dom-elements.git",
@@ -12,7 +12,7 @@
     "microbundle": "^0.13.0"
   },
   "peerDependencies": {
-    "three": "^0.124.0"
+    "three": ">=0.121"
   },
   "scripts": {
     "build": "microbundle --globals three=THREE --external three"
