@@ -1,6 +1,6 @@
 {
   "name": "three-dom-elements",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "homepage": "https://github.com/CodyJasonBennett/three-dom-elements",
   "description": "A lightweight three.js extension to integrate DOM elements into your scene.",
   "repository": "https://github.com/CodyJasonBennett/three-dom-elements.git",
@@ -16,13 +16,13 @@
   "unpkg": "dist/index.umd.js",
   "types": "dist/index.d.ts",
   "devDependencies": {
-    "@types/three": "^0.126.0",
+    "@types/three": "^0.127.0",
     "concurrently": "^6.0.0",
-    "eslint": "^7.21.0",
+    "eslint": "^7.23.0",
     "microbundle": "^0.13.0",
     "prettier": "^2.2.1",
     "serve": "^11.3.2",
-    "three": "^0.126.1"
+    "three": "^0.127.0"
   },
   "peerDependencies": {
     "three": ">=0.125"

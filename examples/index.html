@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <title>three-dom-elements</title>
     <style>
-       body {
+      body {
         margin: 0;
         overflow: hidden;
       }
@@ -27,10 +27,14 @@
   </head>
   <body>
     <script type="module">
-      import { WebGLRenderer, PerspectiveCamera, Scene } from 'https://cdn.skypack.dev/three@0.126.1/build/three.module.js';
-      import { OrbitControls } from 'https://cdn.skypack.dev/three@0.126.1/examples/jsm/controls/OrbitControls.js';
+      import {
+        WebGLRenderer,
+        PerspectiveCamera,
+        Scene,
+      } from 'https://cdn.skypack.dev/three@0.127.0/build/three.module.js';
+      import { OrbitControls } from 'https://cdn.skypack.dev/three@0.127.0/examples/jsm/controls/OrbitControls.js';
 
-      importShim("../dist/index.modern.module.js").then(({ DOMContext, DOMElement }) => {
+      importShim('../dist/index.modern.module.js').then(({ DOMContext, DOMElement }) => {
         const { innerWidth, innerHeight } = window;
 
         const renderer = new WebGLRenderer();
@@ -77,8 +81,8 @@
     <script type="importmap-shim">
       {
         "imports": {
-          "three": "https://cdn.skypack.dev/three@0.126.1",
-          "three/": "https://cdn.skypack.dev/three@0.126.1/"
+          "three": "https://cdn.skypack.dev/three@0.127.0",
+          "three/": "https://cdn.skypack.dev/three@0.127.0/"
         }
       }
     </script>

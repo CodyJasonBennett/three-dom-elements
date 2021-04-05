@@ -12,40 +12,25 @@ The following projects an iFrame into a threejs scene as a plane. You can use th
 
 View the [live demo](https://codesandbox.io/s/three-dom-elements-cg2uc).
 
+[![Demo preview](/examples/preview.jpg)](https://codesandbox.io/s/three-dom-elements-cg2uc)
+
 ```js
-import { WebGLRenderer, PerspectiveCamera, Scene } from 'three';
 import { DOMContext, DOMElement } from 'three-dom-elements';
 
-const { innerWidth, innerHeight } = window;
-
-// Three boilerplate
-const renderer = new WebGLRenderer();
-renderer.setSize(innerWidth, innerHeight);
-document.body.appendChild(renderer.domElement);
-
-const camera = new PerspectiveCamera(45, innerWidth / innerHeight, 0.01, 10);
-camera.position.z = 2;
-
-const scene = new Scene();
-
-// Create a DOM context to draw from
+// Create a DOM context to draw with
 const context = new DOMContext(camera);
-context.setSize(innerWidth, innerHeight);
+context.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(context.domElement);
 
-// Create a DOM element
-const iFrame = document.createElement('iframe');
-iFrame.src = 'https://threejs.org';
-iFrame.style.border = 'none';
+// Create an element to project
+const element = document.createElement('iframe');
+element.src = 'https://threejs.org';
+element.style.border = 'none';
 
 // Project it
-const element = new DOMElement(context, iFrame);
+const element = new DOMElement(context, element);
 scene.add(element);
 
 // Render it
-renderer.setAnimationLoop(() => {
-  context.update();
-
-  renderer.render(scene, camera);
-});
+context.update();
 ```

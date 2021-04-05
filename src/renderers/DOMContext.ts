@@ -4,11 +4,29 @@ import { DOMElement } from '../objects/DOMElement';
 import { cssFactor } from '../constants';
 
 export class DOMContext {
+  /**
+   * Whether to enable the `DOMContext` and its projection. Default is `true.`
+   */
   enabled: boolean;
+  /**
+   * Renderer used for rendering the DOM
+   */
   cssRenderer: CSS3DRenderer;
+  /**
+   * Target DOM element to render to
+   */
   domElement: HTMLElement;
+  /**
+   * Camera used for CSS projection
+   */
   cssCamera: PerspectiveCamera;
+  /**
+   * Parent camera used to sync with WebGL
+   */
   camera: PerspectiveCamera;
+  /**
+   * CSS scene used to contain CSS projections
+   */
   cssScene: Scene;
 
   /**
@@ -16,11 +34,14 @@ export class DOMContext {
    * @param camera  A perspective camera instance to draw from
    */
   constructor(camera: PerspectiveCamera) {
+    // Set default settings
     this.enabled = true;
 
+    // Init renderer
     this.cssRenderer = new CSS3DRenderer();
     this.domElement = this.cssRenderer.domElement;
 
+    // Init camera
     this.cssCamera = new PerspectiveCamera(
       camera.fov,
       camera.aspect,
@@ -29,8 +50,10 @@ export class DOMContext {
     );
     this.camera = camera;
 
+    // Init scene
     this.cssScene = new Scene();
 
+    // Bind update
     this.update = this.update.bind(this);
   }
 
@@ -49,9 +72,11 @@ export class DOMContext {
    * Updates the DOM context's renderer and camera states
    */
   update() {
+    // Sync CSS camera with WebGL camera
     this.cssCamera.quaternion.copy(this.camera.quaternion);
     this.cssCamera.position.copy(this.camera.position).multiplyScalar(cssFactor);
 
+    // Update descendants
     if (this.enabled) {
       this.cssScene.traverse(child => {
         const element = child as DOMElement;
@@ -62,6 +87,7 @@ export class DOMContext {
       });
     }
 
+    // Render projection
     this.cssRenderer.render(this.cssScene, this.cssCamera);
   }
 }
