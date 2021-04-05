@@ -1,6 +1,6 @@
 {
   "name": "three-dom-elements",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "homepage": "https://github.com/CodyJasonBennett/three-dom-elements",
   "description": "A lightweight three.js extension to integrate DOM elements into your scene.",
   "repository": "https://github.com/CodyJasonBennett/three-dom-elements.git",

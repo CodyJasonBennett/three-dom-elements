@@ -30,7 +30,4 @@ element.style.border = 'none';
 // Project it
 const element = new DOMElement(context, element);
 scene.add(element);
-
-// Render it
-context.update();
 ```
