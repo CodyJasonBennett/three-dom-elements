@@ -1,4 +1,6 @@
 import {
+  PerspectiveCamera,
+  Scene,
   Mesh,
   PlaneGeometry,
   MeshBasicMaterial,
@@ -7,69 +9,160 @@ import {
   Vector3,
   Box3,
 } from 'three';
-import { CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer';
-import { DOMContext } from '../renderers/DOMContext';
-import { cssFactor } from '../constants';
+import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer';
+
+/**
+ * Useful for projecting to scale high-resolution DOM elements
+ */
+export const cssFactor = 100;
+
+export class DOMContext {
+  /**
+   * Whether to enable the `DOMContext` and its projection. Default is `true.`
+   */
+  enabled;
+  /**
+   * Renderer used for rendering the DOM
+   */
+  cssRenderer;
+  /**
+   * Target DOM element to render to
+   */
+  domElement;
+  /**
+   * Camera used for CSS projection
+   */
+  cssCamera;
+  /**
+   * Parent camera used to sync with WebGL
+   */
+  camera;
+  /**
+   * CSS scene used to contain CSS projections
+   */
+  cssScene;
+
+  /**
+   * DOM context instance
+   * @param {PerspectiveCamera} camera  A perspective camera instance to draw from
+   */
+  constructor(camera) {
+    // Set default settings
+    this.enabled = true;
+
+    // Init renderer
+    this.cssRenderer = new CSS3DRenderer();
+    this.domElement = this.cssRenderer.domElement;
+
+    // Init camera
+    this.cssCamera = new PerspectiveCamera(
+      camera.fov,
+      camera.aspect,
+      camera.near * cssFactor,
+      camera.far * cssFactor
+    );
+    this.camera = camera;
+
+    // Init scene
+    this.cssScene = new Scene();
+
+    // Bind update
+    this.update = this.update.bind(this);
+  }
+
+  /**
+   * Resizes the DOM context's renderer and camera
+   * @param {Number} width Target width
+   * @param {Number} height Target height
+   */
+  setSize(width, height) {
+    this.cssRenderer.setSize(width, height);
+    this.cssCamera.aspect = width / height;
+    this.cssCamera.updateProjectionMatrix();
+  }
+
+  /**
+   * Updates the DOM context's renderer and camera states
+   */
+  update() {
+    // Sync CSS camera with WebGL camera
+    this.cssCamera.quaternion.copy(this.camera.quaternion);
+    this.cssCamera.position.copy(this.camera.position).multiplyScalar(cssFactor);
+
+    // Update descendants
+    if (this.enabled) {
+      this.cssScene.traverse(element => {
+        if (!element.update) return;
+
+        element.update();
+      });
+    }
+
+    // Render projection
+    this.cssRenderer.render(this.cssScene, this.cssCamera);
+  }
+}
 
 export class DOMElement extends Mesh {
   /**
    * The active `DOMContext` to draw on
    */
-  context: DOMContext;
+  context;
   /**
    * The projected 2D DOM element
    */
-  domElement: HTMLElement;
+  domElement;
   /**
    * DOM element aspect artio
    */
-  aspectRatio: number;
+  aspectRatio;
   /**
    * DOM element width
    */
-  elementWidth: number;
+  elementWidth;
   /**
    * DOM element height
    */
-  elementHeight: number;
+  elementHeight;
   /**
    * 3D projection width
    */
-  width: number;
+  width;
   /**
    * 3D projection height
    */
-  height: number;
+  height;
   /**
    * The projecting 3D object
    */
-  cssObject: CSS3DObject;
+  cssObject;
   /**
    * Internal `Vector3` for WebGL size/scale calculations
    */
-  size: Vector3;
+  size;
   /**
    * Internal `Box` used for bounding box calculations
    */
-  box: Box3;
+  box;
 
   /**
    * DOM element that is projected into 3D space
-   * @param context A DOM context instance to draw on
-   * @param domElement A DOM element to project
-   * @param options DOM element options
-   * @param options.elementWidth DOM element width
-   * @param options.width 3D plane width
-   * @param options.height 3D plane height
+   * @param {DOMContext} context A DOM context instance to draw on
+   * @param {HTMLElement} domElement A DOM element to project
+   * @param {Object} options DOM element options
+   * @param {Number} options.elementWidth DOM element width
+   * @param {Number} options.width 3D plane width
+   * @param {Number} options.height 3D plane height
    */
   constructor(
-    context: DOMContext,
-    domElement: HTMLElement,
+    context,
+    domElement,
     { elementWidth = 768, width = 1, height = 0.75 } = {}
   ) {
     // Create portal mesh
     const geometry = new PlaneGeometry(width, height);
     const material = new MeshBasicMaterial({
+      transparent: true,
       opacity: 0,
       blending: NoBlending,
       side: DoubleSide,
@@ -128,9 +221,9 @@ export class DOMElement extends Mesh {
 
   /**
    * Updates the projected DOM element
-   * @param domElement A DOM element to project
+   * @param {HTMLElement} domElement A DOM element to project
    */
-  setElement(domElement: HTMLElement) {
+  setElement(domElement) {
     // Cleanup previous element
     if (this.domElement.parentNode) {
       this.domElement.parentNode.removeChild(this.domElement);
@@ -179,6 +272,6 @@ export class DOMElement extends Mesh {
 
     // Cleanup WebGL
     this.geometry.dispose();
-    (this.material as MeshBasicMaterial).dispose();
+    this.material.dispose();
   }
 }

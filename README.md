@@ -1,8 +1,4 @@
-# three-dom-elements
-
-[![Latest NPM release](https://img.shields.io/npm/v/three-dom-elements.svg)](https://www.npmjs.com/package/three-dom-elements)
-[![Minzipped size](https://badgen.net/bundlephobia/minzip/three-dom-elements)](https://bundlephobia.com/result?p=three-dom-elements)
-[![License](https://img.shields.io/badge/license-MIT-007ec6.svg)](https://github.com/CodyJasonBennett/three-dom-elements/blob/master/LICENSE)
+# three-dom-elements [![npm](https://img.shields.io/npm/v/three-dom-elements.svg)](https://www.npmjs.com/package/three-dom-elements) [![Minzipped](https://badgen.net/bundlephobia/minzip/three-dom-elements)](https://www.npmjs.com/package/three-dom-elements) [![npm](https://img.shields.io/npm/dt/three-dom-elements.svg)](https://www.npmjs.com/package/three-dom-elements) [![License](https://badgen.net/npm/license/three-dom-elements)](https://www.npmjs.com/package/three-dom-elements)
 
 A lightweight [three.js](https://github.com/mrdoob/three.js) extension to integrate DOM elements into your scene.
 
@@ -12,7 +8,7 @@ The following projects an iFrame into a threejs scene as a plane. You can use th
 
 View the [live demo](https://codesandbox.io/s/three-dom-elements-cg2uc).
 
-[![Demo preview](/examples/preview.jpg)](https://codesandbox.io/s/three-dom-elements-cg2uc)
+[![Demo preview](https://codesandbox.io/api/v1/sandboxes/three-dom-elements-cg2uc/screenshot.png)](https://codesandbox.io/s/three-dom-elements-cg2uc)
 
 ```js
 import { DOMContext, DOMElement } from 'three-dom-elements';
