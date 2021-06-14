@@ -8,8 +8,6 @@ The following projects an iFrame into a threejs scene as a plane. You can use th
 
 View the [live demo](https://codesandbox.io/s/three-dom-elements-cg2uc).
 
-[![Demo preview](https://codesandbox.io/api/v1/sandboxes/three-dom-elements-cg2uc/screenshot.png)](https://codesandbox.io/s/three-dom-elements-cg2uc)
-
 ```js
 import { DOMContext, DOMElement } from 'three-dom-elements';
 
@@ -27,3 +25,5 @@ element.style.border = 'none';
 const element = new DOMElement(context, element);
 scene.add(element);
 ```
+
+[![Demo preview](https://codesandbox.io/api/v1/sandboxes/three-dom-elements-cg2uc/screenshot.png)](https://codesandbox.io/s/three-dom-elements-cg2uc)
