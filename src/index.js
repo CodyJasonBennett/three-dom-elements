@@ -12,7 +12,7 @@ import {
 import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer';
 
 /**
- * Useful for projecting to scale high-resolution DOM elements
+ * Useful for projecting to scale high-resolution DOM elements.
  */
 export const cssFactor = 100;
 
@@ -43,7 +43,8 @@ export class DOMContext {
   cssScene;
 
   /**
-   * DOM context instance
+   * DOM context instance.
+   *
    * @param {PerspectiveCamera} camera  A perspective camera instance to draw from
    */
   constructor(camera) {
@@ -71,7 +72,8 @@ export class DOMContext {
   }
 
   /**
-   * Resizes the DOM context's renderer and camera
+   * Resizes the DOM context's renderer and camera.
+   *
    * @param {Number} width Target width
    * @param {Number} height Target height
    */
@@ -82,7 +84,7 @@ export class DOMContext {
   }
 
   /**
-   * Updates the DOM context's renderer and camera states
+   * Updates the DOM context's renderer and camera states.
    */
   update() {
     // Sync CSS camera with WebGL camera
@@ -91,11 +93,7 @@ export class DOMContext {
 
     // Update descendants
     if (this.enabled) {
-      this.cssScene.traverse(element => {
-        if (!element.update) return;
-
-        element.update();
-      });
+      this.cssScene.traverse(element => element?.update());
     }
 
     // Render projection
@@ -146,7 +144,8 @@ export class DOMElement extends Mesh {
   box;
 
   /**
-   * DOM element that is projected into 3D space
+   * DOM element that is projected into 3D space.
+   *
    * @param {DOMContext} context A DOM context instance to draw on
    * @param {HTMLElement} domElement A DOM element to project
    * @param {Object} options DOM element options
@@ -198,21 +197,21 @@ export class DOMElement extends Mesh {
   }
 
   /**
-   * Adds the current cssObject to the scene
+   * Adds the current cssObject to the scene.
    */
   handleAdded() {
     this.context.cssScene.add(this.cssObject);
   }
 
   /**
-   * Removes the current cssObject from the scene
+   * Removes the current cssObject from the scene.
    */
   handleRemoved() {
     this.context.cssScene.remove(this.cssObject);
   }
 
   /**
-   * Resizes DOM element to sync with projection
+   * Resizes DOM element to sync with projection.
    */
   resizeElement() {
     this.domElement.style.width = `${this.elementWidth}px`;
@@ -220,7 +219,8 @@ export class DOMElement extends Mesh {
   }
 
   /**
-   * Updates the projected DOM element
+   * Updates the projected DOM element.
+   *
    * @param {HTMLElement} domElement A DOM element to project
    */
   setElement(domElement) {
@@ -238,7 +238,7 @@ export class DOMElement extends Mesh {
   }
 
   /**
-   * Updates the DOM element and its projection states
+   * Updates the DOM element and its projection states.
    */
   update() {
     // Get global transform
@@ -260,7 +260,7 @@ export class DOMElement extends Mesh {
   }
 
   /**
-   * Disposes WebGL and DOM elements
+   * Disposes WebGL and DOM elements.
    */
   dispose() {
     // Cleanup events
